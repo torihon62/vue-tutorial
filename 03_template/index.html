@@ -7,14 +7,52 @@
     </head>
     <body>
         <div id="app">
-            <span>Message: {{ msg }}</span>
+            <h2>v-once</h2>
+            <span>Message: {{ msg }}</span><br>
             <span v-once>This will never change: {{ msg }}</span>
+        </div>
+        <div id="app2">
+            <h2>v-html</h2>
+            <p>Using mustaches: {{ rawHtml }}</p>
+            <p>Using v-html directive: <span v-html="rawHtml"></span></p>            
+        </div>
+        <div id="app3">
+            <h2>省略記法</h2>
+            <h3>v-bind</h3>
+            <!-- 完全な構文 -->
+            <a v-bind:href="url"> ... </a><br>
+            <!-- 省略記法 -->
+            <a :href="url"> ... </a>
+
+            <!-- 完全な構文 -->
+            <h3>v-on</h3>
+            <a v-on:click="doSomething"> ... </a><br>
+            <!-- 省略記法 -->
+            <a @click="doSomething"> ... </a>
+            
         </div>
         <script>
             var app = new Vue({
                 el: "#app",
                 data: {
                     msg: "Hello Vue!"
+                }
+            })
+            var app2 = new Vue({
+                el: "#app2",
+                data: {
+                    rawHtml: '<span style="color: red;">This is Red!!</span>'
+                }
+            })
+            var app3 = new Vue({
+                el: "#app3",
+                data: {
+                    url: 'https://google.com'
+                },
+                methods: {
+                    doSomething: function() {
+                        console.log("something!");
+                    }
                 }
             })
         </script>
