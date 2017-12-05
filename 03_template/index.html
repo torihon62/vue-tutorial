@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Template</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    </head>
+    <body>
+        <div id="app">
+            <span>Message: {{ msg }}</span>
+            <span v-once>This will never change: {{ msg }}</span>
+        </div>
+        <script>
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    msg: "Hello Vue!"
+                }
+            })
+        </script>
+    </body>
+</html>
