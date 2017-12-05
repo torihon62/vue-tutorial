@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Template</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    </head>
+    <body>
+        <div id="app" v-bind:class="classObject">
+          <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">test</div>
+          <div v-bind:style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+        </div>
+        <script>
+          var vm = new Vue({
+            el: "#app",
+            data: {
+              isActive: true,
+              isComputed: true,
+              error: {type: 'fatal'},
+              activeColor: 'red',
+              fontSize: 30
+            },
+            computed: {
+              classObject: function () {
+                return {
+                  active: this.isActive && !this.error,
+                  'my-class': this.isComputed,
+                  'text-danger': this.error && this.error.type === 'fatal'
+                }
+              }
+            }            
+          })
+        </script>
+    </body>
+</html>
