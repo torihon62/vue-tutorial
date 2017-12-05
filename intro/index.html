@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>Vue Intro</title>
@@ -7,7 +7,48 @@
 </head>
 <body>
 <div id="app">
+  <h2>hello world</h2>
   {{ message }}
+</div>
+<div id="app-2">
+  <h2>bind</h2>
+  <span v-bind:title="message">
+    Hover your mouse over me for a few seconds
+    to see my dynamically bound title!
+  </span>
+</div>
+<div id="app-3">
+  <h2>条件分岐</h2>
+  <span v-if="seen">Now you see me</span>
+</div>
+<div id="app-4">
+  <h2>リストのループ</h2>
+  <ol>
+    <li v-for="todo in todos">
+      {{ todo.text }}
+    </li>
+  </ol>
+</div>
+<div id="app-5">
+  <h2>メソッド</h2>
+  <p>{{ message }}</p>
+  <button v-on:click="reverseMessage">Reverse Message</button>
+</div>
+<div id="app-6">
+  <h2>双方向バインディング</h2>
+  <p>{{ message }}</p>
+  <input v-model="message">
+</div>
+<div id="app-7">
+  <h2>コンポーネント</h2>
+  <ol>
+    <!-- 
+      各 todo-item の内容を表す todo オブジェクトを与えます。
+      これにより内容は動的に変化します。
+      また後述する "key" を各コンポーネントに提供する必要があります。
+    -->
+    <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
+  </ol>
 </div>
 <script>
     var app = new Vue({
@@ -16,6 +57,59 @@
         message: 'Hello Vue!'
       }
     });
+    var app2 = new Vue({
+      el: '#app-2',
+      data: {
+        message: 'You loaded this page on ' + new Date().toLocaleString()
+      }
+    })
+    var app3 = new Vue({
+      el: '#app-3',
+      data: {
+        seen: true
+      }
+    })
+    var app4 = new Vue({
+      el: '#app-4',
+      data: {
+        todos: [
+          { text: 'Learn JavaScript' },
+          { text: 'Learn Vue' },
+          { text: 'Build something awesome' }
+        ]
+      }
+    })
+    var app5 = new Vue({
+      el: '#app-5',
+      data: {
+        message: 'Hello Vue.js!'
+      },
+      methods: {
+        reverseMessage: function () {
+          this.message = this.message.split('').reverse().join('')
+        }
+      }
+    })
+    var app6 = new Vue({
+      el: '#app-6',
+      data: {
+        message: 'Hello Vue!'
+      }
+    })
+    Vue.component('todo-item', {
+      props: ['todo'],
+      template: '<li>{{ todo.text }}</li>'
+    })
+    var app7 = new Vue({
+      el: '#app-7',
+      data: {
+        groceryList: [
+          { id: 0, text: 'Vegetables' },
+          { id: 1, text: 'Cheese' },
+          { id: 2, text: 'Whatever else humans are supposed to eat' }
+        ]
+      }
+    })
 </script>
 </body>
 </html>
