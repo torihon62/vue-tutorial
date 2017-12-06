@@ -6,12 +6,34 @@
         <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     </head>
     <body>
-      <div v-if="Math.random() > 0.5">
-        Now you see me
+      <div id="app">
+        <div v-if="Math.random() > 0.5">
+          Now you see me
+        </div>
+        <div v-else>
+          Now you don't
+        </div>
       </div>
-      <div v-else>
-        Now you don't
-      </div>
-
+      <script>
+        var vm = new Vue({
+          el: "#app",
+          data: {
+            msg: "hello"
+          }
+        });
+        /*
+        v-if は、イベントリスナと子コンポーネント内部の条件ブロックが適切に破棄され、
+        そして切り替えられるまでの間再作成されるため、”リアル”な条件レンダリングです。
+        v-if は 遅延描画 (lazy) です。 初期表示において false の場合、何もしません。
+        条件付きブロックは、条件が最初に true になるまで描画されません。
+        一方で、v-show はとてもシンプルです。要素は初期条件に関わらず常に描画され、
+        シンプルな CSS ベースの切り替えとして保存されます。
+        一般的に、v-if はより高い切り替えコストを持っているのに対して、 
+        v-show はより高い初期描画コストを持っています。
+        そのため、とても頻繁に何かを切り替える必要があれば v-show を選び、
+        条件が実行時に変更することがほとんどない場合は、v-if を選びます。        
+        */
+      </script>
     </body>
+    
 </html>
