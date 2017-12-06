@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Template</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    </head>
+    <body>
+        <h2>list example</h2>
+        <ul id="example-1">
+          <li v-for="item in items">
+            {{ item.message }}
+          </li>
+        </ul>
+        <h2>index(key)の使い方</h2>
+        <ul id="example-2">
+          <li v-for="(item, index) in items">
+            {{ parentMessage }} - {{ index }} - {{ item.message }}
+          </li>
+        </ul>
+        <h2>Objectのv-for</h2>
+        <div id="example-3">
+            <div v-for="(value, key, index) in object">
+              {{ index }}. {{ key }}: {{ value }}
+            </div>
+        </div>
+      <script>
+        var example1 = new Vue({
+          el: '#example-1',
+          data: {
+            items: [
+              { message: 'Foo' },
+              { message: 'Bar' }
+            ]
+          }
+        })
+        var example2 = new Vue({
+          el: '#example-2',
+          data: {
+            parentMessage: 'Parent',
+            items: [
+              { message: 'Foo' },
+              { message: 'Bar' }
+            ]
+          }
+        })
+        var example3 = new Vue({
+          el: '#example-3',
+          data: {
+            object: {
+              firstName: 'John',
+              lastName: 'Doe',
+              age: 30
+            }
+          }
+        })
+      </script>
+    </body>
+    
+</html>
