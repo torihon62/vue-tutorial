@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Template</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    </head>
+    <body>
+      <div id="example">
+        <my-component></my-component>
+      </div>
+      <div id="example-2">
+        <simple-counter></simple-counter>
+        <simple-counter></simple-counter>
+        <simple-counter></simple-counter>
+      </div>
+      <div id="example3">
+        <!-- HTML ではケバブケース -->
+        <child my-message="hello!"></child>
+      </div>
+      <div id="example4">
+        <input v-model="parentMsg">
+        <br>
+        <child v-bind:my-message="parentMsg"></child>
+      </div>
+      <!-- Next 単方向データフロー -->
+      <script>
+        // 登録する
+        Vue.component('my-component', {
+          template: '<div>A custom component!</div>'
+        })
+        // root インスタンスを作成する
+        new Vue({
+          el: '#example'
+        })
+
+        Vue.component('simple-counter', {
+          template: '<button v-on:click="counter += 1">{{ counter }}</button>',
+          // data は技術的には関数なので、Vue は警告を出しません。
+          // しかし、各コンポーネントのインスタンスは
+          // 同じオブジェクトの参照を返します。
+          data: function () {
+            return {
+              counter: 0
+            }
+          }
+        })
+        new Vue({
+          el: '#example-2'
+        })
+        
+        Vue.component('child', {
+          // プロパティを宣言します。
+          // JavaScript ではキャメルケース
+          props: ['myMessage'],
+          // 単なるデータのように、プロパティは内部テンプレートで使用することができ、
+          // そして this.messageとして、vm の中で利用可能になります。
+          template: '<span>{{ myMessage }}</span>'
+        })
+        // root インスタンスを作成する
+        new Vue({
+          el: '#example3'
+        })
+ 
+        new Vue({
+          el: '#example4',
+          data: {
+            parentMsg: "Message from parent"
+          }
+        })       
+      </script>
+    </body>
+</html>
