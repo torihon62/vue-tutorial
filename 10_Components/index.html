@@ -23,7 +23,19 @@
         <br>
         <child v-bind:my-message="parentMsg"></child>
       </div>
-      <!-- Next 単方向データフロー -->
+      <div id="counter-event-example">
+        <p>{{ total }}</p>
+        <button-counter v-on:increment="incrementTotal"></button-counter>
+        <button-counter v-on:increment="incrementTotal"></button-counter>
+      </div>
+      <div id="form-input">
+        <currency-input v-model="price"></currency-input>
+      </div>
+      <div id="example5">
+        <component v-bind:is="currentView">
+          <!-- vm.currentview が変更されると、中身が変更されます! -->
+        </component>
+      </div>
       <script>
         // 登録する
         Vue.component('my-component', {
@@ -67,7 +79,123 @@
           data: {
             parentMsg: "Message from parent"
           }
-        })       
+        })
+        
+        // プロパティ検証
+        Vue.component('example', {
+          props: {
+            // 基本な型チェック (`null` はどんな型でも受け付ける)
+            propA: Number,
+            // 複数の受け入れ可能な型
+            propB: [String, Number],
+            // 必須な文字列
+            propC: {
+              type: String,
+              required: true
+            },
+            // デフォルト値
+            propD: {
+              type: Number,
+              default: 100
+            },
+            // オブジェクトと配列のデフォルトはファクトリ関数から返すようにしています
+            propE: {
+              type: Object,
+              default: function () {
+                return { message: 'hello' }
+              }
+            },
+            // カスタムバリデータ関数
+            propF: {
+              validator: function (value) {
+                return value > 10
+              }
+            }
+          }
+        })
+        Vue.component('button-counter', {
+          template: '<button v-on:click="incrementCounter">{{ counter }}</button>',
+          props: {
+            counter: {
+              default: 0
+            },
+          },
+          // data: function () {
+          //   return {
+          //     counter: 0
+          //   }
+          // },
+          methods: {
+            incrementCounter: function () {
+              this.counter += 1
+              this.$emit('increment')
+            }
+          },
+        })
+        new Vue({
+          el: '#counter-event-example',
+          data: {
+            total: 0
+          },
+          methods: {
+            incrementTotal: function () {
+              this.total += 1
+            }
+          }
+        })
+        Vue.component('currency-input', {
+          template: '\
+            <span>\
+              $\
+              <input\
+                ref="input"\
+                v-bind:value="value"\
+                v-on:input="updateValue($event.target.value)">\
+            </span>\
+          ',
+          props: ['value'],
+          methods: {
+            // 値を直接的に更新する代わりに、このメソッドを使用して input の
+            // 値の整形と値に対する制約が行われる
+            updateValue: function (value) {
+              var formattedValue = value
+                // 両端のスペースを削除
+                .trim()
+                // 小数点2桁以下まで短縮
+                .slice(
+                  0,
+                  value.indexOf('.') === -1
+                    ? value.length
+                    : value.indexOf('.') + 3
+                )
+              // 値が既に正規化されていないならば、
+              // 手動で適合するように上書き
+              if (formattedValue !== value) {
+                this.$refs.input.value = formattedValue
+              }
+              // input イベントを通して数値を発行する
+              this.$emit('input', Number(formattedValue))
+            }
+          }
+        })
+        new Vue({
+          el: "#form-input",
+          data: {
+            price: 0
+          }
+        })
+        var vm5 = new Vue({
+          el: '#example5',
+          data: {
+            currentView: 'home'
+          },
+          components: {
+            home: { template: "<p>hello home</p>" },
+            posts: { template: "<p>hello posts</p>" },
+            archive: { template: "<p>hello archive</p>" }
+          }
+        })
+        
       </script>
     </body>
 </html>
